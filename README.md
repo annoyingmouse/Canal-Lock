@@ -8,6 +8,8 @@ Introduction
 
 Using [jQuery](http://jquery.com/) and [Raphaël](http://raphaeljs.com/) to mimic the use and action of a canal lock. It's online [here](https://googledrive.com/host/0ByRgQIhodQXfaVdHOElsZTV5c3c/canal/).
 
+I did the original in order to help teach the kids about how a lock works - they'd been through enough of them and cycled over one at least once a day on the way to primary school - that I thought that a visual representation might be in order.
+
 History
 -------
 
