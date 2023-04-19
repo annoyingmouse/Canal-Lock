@@ -27,7 +27,9 @@
     </div>
 </div>
 <div class="container" style="background-color: #fff;">
-    <div id="lockHolder" style="width:900px;height:400px;margin: 0 auto;"></div>
+  <div id="lockHolder" style="width:900px;height:400px;margin: 0 auto;"></div>
+  <wc-canal-lock></wc-canal-lock>
+
 </div>
 <script src="./js/jquery.js"></script>
 <script src="./js/jquery-migrate-1.0.0.js"></script>
@@ -36,6 +38,7 @@
 <script src="./js/lock.js"></script>
 <script src="./js/vars.js"></script>
 <script src="./js/functions.js"></script>
+<script type="module" src="./wc-lock.js"></script>
 <script>
     $(function () {
         var paper = Raphael("lockHolder", 900, 400);
