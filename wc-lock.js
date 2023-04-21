@@ -116,190 +116,402 @@ class WVCanalLock extends HTMLElement {
     `
   }
 
-  incrementX(from, to) {
-    if(from < to){
-      this.boatX = from + 1
-      setTimeout(() => {
-        this.incrementX(this.boatX, to)
-        this.boat.setAttribute('d', `M ${this.boatX}, ${this.boatY} L ${this.boatX + 20}, ${this.boatY} L ${this.boatX + 20}, ${this.boatY - 20} L ${this.boatX + 130}, ${this.boatY - 20} L ${this.boatX + 130}, ${this.boatY} L ${this.boatX + 150}, ${this.boatY} L ${this.boatX + 140}, ${this.boatY + 10} L ${this.boatX + 10}, ${this.boatY + 10}`)
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
-  decrementX(from, to) {
-    if(from > to) {
-      this.boatX = from - 1
-      setTimeout(() => {
-        this.decrementX(this.boatX, to)
-        this.boat.setAttribute('d', `M ${this.boatX}, ${this.boatY} L ${this.boatX + 20}, ${this.boatY} L ${this.boatX + 20}, ${this.boatY - 20} L ${this.boatX + 130}, ${this.boatY - 20} L ${this.boatX + 130}, ${this.boatY} L ${this.boatX + 150}, ${this.boatY} L ${this.boatX + 140}, ${this.boatY + 10} L ${this.boatX + 10}, ${this.boatY + 10}`)
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
   moveRight() {
-    if(!this.moving) {
-      if (this.boatX === 30 && this.leftGate.width.baseVal.value === 60) {
-        this.moving = true
-        this.incrementX(this.boatX, 250)
-        this.boat.dataset.position = 'middle'
-      }
-      if (this.boatX === 250 && this.rightGate.width.baseVal.value === 60) {
-        this.moving = true
-        this.incrementX(this.boatX, 470)
-        this.boat.dataset.position = 'right'
+    if(
+      !this.moving
+      &&
+      (
+        this.boat.dataset.position === 'left'
+        ||
+        this.boat.dataset.position === 'middle'
+      )
+      &&
+      (
+        (
+          this.boat.dataset.position === 'left'
+          &&
+          this.leftGate.dataset.status === 'open'
+        )
+        ||
+        (
+          this.boat.dataset.position === 'middle'
+          &&
+          this.rightGate.dataset.status === 'open'
+        )
+      )
+    ) {
+      this.moving = true
+      const target = this.boat.dataset.position === 'left' ? 250 : 470
+      let counter = 0
+      while(this.boatX <= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.boat.setAttribute('d', `M ${i}, ${this.boatY} L ${i + 20}, ${this.boatY} L ${i + 20}, ${this.boatY - 20} L ${i + 130}, ${this.boatY - 20} L ${i + 130}, ${this.boatY} L ${i + 150}, ${this.boatY} L ${i + 140}, ${this.boatY + 10} L ${i + 10}, ${this.boatY + 10}`)
+            if(i === target) {
+              this.moving = false
+              this.boatX = i
+              this.boat.dataset.position = target === 250 ? 'middle' : 'right'
+            }
+          }, this.speed * c)
+        })(this.boatX++, counter++)
       }
     }
   }
 
   moveLeft() {
-    if(!this.moving) {
-      if (this.boatX === 250 && this.leftGate.width.baseVal.value === 60) {
-        this.moving = true
-        this.decrementX(this.boatX, 30)
+    if(
+      !this.moving
+      &&
+      (
+        this.boat.dataset.position === 'middle'
+        ||
+        this.boat.dataset.position === 'right'
+      )
+      &&
+      (
+        (
+          this.boat.dataset.position === 'middle'
+          &&
+          this.leftGate.dataset.status === 'open'
+        )
+        ||
+        (
+          this.boat.dataset.position === 'right'
+          &&
+          this.rightGate.dataset.status === 'open'
+        )
+      )
+    ) {
+      this.moving = true
+      const target = this.boat.dataset.position === 'middle' ? 30 : 250
+      let counter = 0
+      while(this.boatX >= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.boat.setAttribute('d', `M ${i}, ${this.boatY} L ${i + 20}, ${this.boatY} L ${i + 20}, ${this.boatY - 20} L ${i + 130}, ${this.boatY - 20} L ${i + 130}, ${this.boatY} L ${i + 150}, ${this.boatY} L ${i + 140}, ${this.boatY + 10} L ${i + 10}, ${this.boatY + 10}`)
+            if(i === target) {
+              this.moving = false
+              this.boat.dataset.position = 'middle'
+            }
+          }, this.speed * c)
+        })(this.boatX--, counter++)
       }
-      if (this.boatX === 470 && this.rightGate.width.baseVal.value === 60) {
-        this.moving = true
-        this.decrementX(this.boatX, 250)
-      }
-    }
-  }
-
-  increaseWidth(target, to) {
-    if(target.width.baseVal.value < to) {
-      target.width.baseVal.value = target.width.baseVal.value + 1
-      setTimeout(() => {
-        this.increaseWidth(target, to)
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
-  decreaseWidth(target, to) {
-    if(target.width.baseVal.value > to) {
-      target.width.baseVal.value = target.width.baseVal.value - 1
-      setTimeout(() => {
-        this.decreaseWidth(target, to)
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
-  increaseHeight(target, to) {
-    if(target.height.baseVal.value < to) {
-      target.height.baseVal.value = target.height.baseVal.value + 1
-      setTimeout(() => {
-        this.increaseHeight(target, to)
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
-  decreaseHeight(target, to) {
-    if(target.height.baseVal.value > to) {
-      target.height.baseVal.value = target.height.baseVal.value - 1
-      setTimeout(() => {
-        this.decreaseHeight(target, to)
-      }, this.speed)
-    } else {
-      this.moving = false
     }
   }
 
   openRightGate() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'low'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
       this.moving = true
-      this.increaseWidth(this.rightGate, 60)
+      const target = 60
+      let gateWidth = this.rightGate.width.baseVal.value
+      let counter = 0
+      while(gateWidth <= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.rightGate.width.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.rightGate.dataset.status = 'open'
+            }
+          }, this.speed * c)
+        })(gateWidth++, counter++)
+      }
     }
   }
 
   closeRightGate() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'low'
+      &&
+      this.rightGate.dataset.status === 'open'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
       this.moving = true
-      this.decreaseWidth(this.rightGate, 0)
+      const target = 0
+      let gateWidth = this.rightGate.width.baseVal.value
+      let counter = 0
+      while(gateWidth >= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.rightGate.width.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.rightGate.dataset.status = 'closed'
+            }
+          }, this.speed * c)
+        })(gateWidth--, counter++)
+      }
     }
   }
 
   openLeftGate() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'high'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
       this.moving = true
-      this.increaseWidth(this.leftGate, 60)
+      const target = 60
+      let gateWidth = this.leftGate.width.baseVal.value
+      let counter = 0
+      while(gateWidth <= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.leftGate.width.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.leftGate.dataset.status = 'open'
+            }
+          }, this.speed * c)
+        })(gateWidth++, counter++)
+      }
     }
   }
 
   closeLeftGate() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'high'
+      &&
+      this.leftGate.dataset.status === 'open'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
       this.moving = true
-      this.decreaseWidth(this.leftGate, 0)
+      const target = 0
+      let gateWidth = this.leftGate.width.baseVal.value
+      let counter = 0
+      while(gateWidth >= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.leftGate.width.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.leftGate.dataset.status = 'closed'
+            }
+          }, this.speed * c)
+        })(gateWidth--, counter++)
+      }
     }
   }
 
   openRightSluice() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      const sluiceTarget = 160
+      const waterYTarget = 200
+      const waterHeightTarget = 160
       this.moving = true
-      this.decreaseHeight(this.rightSluice, 160)
-      if(this.water.height.baseVal.value === 220) {
-        this.dropWater()
+      let sluiceHeight = this.rightSluice.height.baseVal.value
+      let waterY = this.water.y.baseVal.value
+      let waterHeight = this.water.height.baseVal.value
+      let counter = 0
+      while(
+        sluiceHeight >= sluiceTarget
+        ||
+        waterY <= waterYTarget
+        ||
+        waterHeight >= waterHeightTarget
+        ) {
+        ((
+          sluiceHeight,
+          waterY,
+          waterHeight,
+          counter
+        ) => {
+          setTimeout(() => {
+            if(this.rightSluice.dataset.status !== 'open') {
+              this.rightSluice.height.baseVal.value = sluiceHeight
+            }
+            if(this.water.dataset.level !== 'low') {
+              this.water.y.baseVal.value = waterY
+            }
+            if(this.water.dataset.level !== 'low') {
+              this.water.height.baseVal.value = waterHeight
+            }
+            if(
+              this.rightSluice.height.baseVal.value === sluiceTarget
+              &&
+              this.water.y.baseVal.value === waterYTarget
+              &&
+              this.water.height.baseVal.value === waterHeightTarget
+            ) {
+              this.moving = false
+            }
+            if(sluiceHeight === sluiceTarget) {
+              this.rightSluice.dataset.status = 'open'
+            }
+            if(waterY === waterYTarget && waterHeight === waterHeightTarget){
+              this.water.dataset.level = 'low'
+            }
+          }, this.speed * counter)
+        })(
+          sluiceHeight--,
+          waterY++,
+          waterHeight--,
+          counter++
+        )
       }
     }
   }
 
   closeRightSluice() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.rightSluice.dataset.status === 'open'
+    ) {
       this.moving = true
-      this.increaseHeight(this.rightSluice, 190)
-    }
-  }
-
-  raiseWater() {
-    if(this.water.height.baseVal.value < 220) {
-      this.moving = true
-      this.water.height.baseVal.value = this.water.height.baseVal.value + 1
-      this.water.y.baseVal.value = this.water.y.baseVal.value - 1
-      setTimeout(() => {
-        this.raiseWater()
-      }, this.speed)
-    } else {
-      this.moving = false
-    }
-  }
-
-  dropWater() {
-    if(this.water.height.baseVal.value > 160) {
-      this.moving = true
-      this.water.height.baseVal.value = this.water.height.baseVal.value - 1
-      this.water.y.baseVal.value = this.water.y.baseVal.value + 1
-      setTimeout(() => {
-        this.dropWater()
-      }, this.speed)
-    } else {
-      this.moving = false
+      const target = 190
+      let sluiceHeight = this.rightSluice.height.baseVal.value
+      let counter = 0
+      while(sluiceHeight <= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.rightSluice.height.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.rightSluice.dataset.status = 'closed'
+            }
+          }, this.speed * c)
+        })(sluiceHeight++, counter++)
+      }
     }
   }
 
   openLeftSluice() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      const sluiceTarget = 160
+      const waterYTarget = 140
+      const waterHeightTarget = 220
       this.moving = true
-      this.decreaseHeight(this.leftSluice, 160)
-      if(this.water.height.baseVal.value === 160 && this.rightSluice.height.baseVal.value === 190) {
-        this.raiseWater()
+      let sluiceHeight = this.leftSluice.height.baseVal.value
+      let waterY = this.water.y.baseVal.value
+      let waterHeight = this.water.height.baseVal.value
+      let counter = 0
+      while(
+        sluiceHeight >= sluiceTarget
+        ||
+        waterY >= waterYTarget
+        ||
+        waterHeight <= waterHeightTarget
+      ) {
+        ((
+          sluiceHeight,
+          waterY,
+          waterHeight,
+          counter
+        ) => {
+          setTimeout(() => {
+            if(this.leftSluice.dataset.status !== 'open') {
+              this.leftSluice.height.baseVal.value = sluiceHeight
+            }
+            if(this.water.dataset.level !== 'high') {
+              this.water.y.baseVal.value = waterY
+            }
+            if(this.water.dataset.level !== 'high') {
+              this.water.height.baseVal.value = waterHeight
+            }
+            if(
+              this.leftSluice.height.baseVal.value === sluiceTarget
+              &&
+              this.water.y.baseVal.value === waterYTarget
+              &&
+              this.water.height.baseVal.value === waterHeightTarget
+            ) {
+              this.moving = false
+            }
+            if(sluiceHeight === sluiceTarget) {
+              this.leftSluice.dataset.status = 'open'
+            }
+            if(waterY === waterYTarget && waterHeight === waterHeightTarget){
+              this.water.dataset.level = 'high'
+            }
+          }, this.speed * counter)
+        })(
+          sluiceHeight--,
+          waterY--,
+          waterHeight++,
+          counter++
+        )
       }
     }
   }
 
   closeLeftSluice() {
-    if(!this.moving) {
+    if(
+      !this.moving
+      &&
+      this.leftSluice.dataset.status === 'open'
+    ) {
       this.moving = true
-      this.increaseHeight(this.leftSluice, 190)
+      const target = 190
+      let sluiceHeight = this.leftSluice.height.baseVal.value
+      let counter = 0
+      while(sluiceHeight <= target) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.leftSluice.height.baseVal.value = i
+            if(i === target) {
+              this.moving = false
+              this.leftSluice.dataset.status = 'closed'
+            }
+          }, this.speed * c)
+        })(sluiceHeight++, counter++)
+      }
     }
   }
-
 
   connectedCallback() {
     this.render()
