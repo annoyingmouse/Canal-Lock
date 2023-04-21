@@ -14,7 +14,6 @@ class WVCanalLock extends HTMLElement {
   get svg() {
     return `
       <svg height="400"
-           version="1.1"
            width="900"
            xmlns="http://www.w3.org/2000/svg"
            style="overflow: hidden; position: relative; left: -0.400002px;">
@@ -146,7 +145,16 @@ class WVCanalLock extends HTMLElement {
       while(this.boatX >= target) {
         ((i, c) => {
           setTimeout(() => {
-            this.boat.setAttribute('d', `M ${i}, ${this.boatY} L ${i + 20}, ${this.boatY} L ${i + 20}, ${this.boatY - 20} L ${i + 130}, ${this.boatY - 20} L ${i + 130}, ${this.boatY} L ${i + 150}, ${this.boatY} L ${i + 140}, ${this.boatY + 10} L ${i + 10}, ${this.boatY + 10}`)
+            this.boat.setAttribute('d', `
+              M ${i}, ${this.boatY}
+              L ${i + 20}, ${this.boatY}
+              L ${i + 20}, ${this.boatY - 20}
+              L ${i + 130}, ${this.boatY - 20}
+              L ${i + 130}, ${this.boatY}
+              L ${i + 150}, ${this.boatY}
+              L ${i + 140}, ${this.boatY + 10}
+              L ${i + 10}, ${this.boatY + 10}
+            `)
             if(i === target) {
               this.moving = false
               this.boat.dataset.position = 'middle'
@@ -186,7 +194,16 @@ class WVCanalLock extends HTMLElement {
       while(this.boatX <= target) {
         ((i, c) => {
           setTimeout(() => {
-            this.boat.setAttribute('d', `M ${i}, ${this.boatY} L ${i + 20}, ${this.boatY} L ${i + 20}, ${this.boatY - 20} L ${i + 130}, ${this.boatY - 20} L ${i + 130}, ${this.boatY} L ${i + 150}, ${this.boatY} L ${i + 140}, ${this.boatY + 10} L ${i + 10}, ${this.boatY + 10}`)
+            this.boat.setAttribute('d', `
+              M ${i}, ${this.boatY}
+              L ${i + 20}, ${this.boatY}
+              L ${i + 20}, ${this.boatY - 20}
+              L ${i + 130}, ${this.boatY - 20}
+              L ${i + 130}, ${this.boatY}
+              L ${i + 150}, ${this.boatY}
+              L ${i + 140}, ${this.boatY + 10}
+              L ${i + 10}, ${this.boatY + 10}
+            `)
             if(i === target) {
               this.moving = false
               this.boatX = i
@@ -336,72 +353,76 @@ class WVCanalLock extends HTMLElement {
       &&
       this.rightSluice.dataset.status === 'closed'
     ) {
+
+      let sluiceCounter = 0
       const sluiceTarget = 160
-      const waterYTarget = 140
-      const waterHeightTarget = 220
-      const boatYTarget = 130
-      this.moving = true
       let sluiceHeight = this.leftSluice.height.baseVal.value
+
+      let waterYCounter = 0
+      const waterYTarget = 140
       let waterY = this.water.y.baseVal.value
-      let waterHeight = this.water.height.baseVal.value
+
+      let boatYCounter = 0
+      const boatYTarget = 130
       let boatY = this.boatY
-      let counter = 0
-      while(
-        sluiceHeight >= sluiceTarget
-        ||
-        waterY >= waterYTarget
-        ||
-        waterHeight <= waterHeightTarget
-        ||
-        boatY >= boatYTarget
-      ) {
-        ((
-          sluiceHeight,
-          waterY,
-          waterHeight,
-          boatY,
-          counter
-        ) => {
+
+      let waterHeightCounter = 0
+      const waterHeightTarget = 220
+      let waterHeight = this.water.height.baseVal.value
+
+      while(sluiceHeight >= sluiceTarget) {
+        ((i, c) => {
           setTimeout(() => {
-            if(this.leftSluice.dataset.status !== 'open') {
-              this.leftSluice.height.baseVal.value = sluiceHeight
-            }
-            if(this.boat.dataset.position === 'middle' && boatY !== boatYTarget) {
-              this.boat.setAttribute('d', `M ${this.boatX}, ${boatY} L ${this.boatX + 20}, ${boatY} L ${this.boatX + 20}, ${boatY - 20} L ${this.boatX + 130}, ${boatY - 20} L ${this.boatX + 130}, ${boatY} L ${this.boatX + 150}, ${boatY} L ${this.boatX + 140}, ${boatY + 10} L ${this.boatX + 10}, ${boatY + 10}`)
-            } else {
-              if(this.boat.dataset.position === 'middle') {
-                this.boatY = boatY
-              }
-            }
-            if(this.water.dataset.level !== 'high') {
-              this.water.y.baseVal.value = waterY
-            }
-            if(this.water.dataset.level !== 'high') {
-              this.water.height.baseVal.value = waterHeight
-            }
-            if(
-              this.leftSluice.height.baseVal.value === sluiceTarget
-              &&
-              this.water.y.baseVal.value === waterYTarget
-              &&
-              this.water.height.baseVal.value === waterHeightTarget
-            ) {
-              this.moving = false
-            }
-            if(sluiceHeight === sluiceTarget) {
+            this.leftSluice.height.baseVal.value = i
+            if(i === sluiceTarget) {
               this.leftSluice.dataset.status = 'open'
             }
-            if(waterY === waterYTarget && waterHeight === waterHeightTarget){
+          }, this.speed * c)
+        })(sluiceHeight--, sluiceCounter++)
+      }
+
+      while(waterY >= waterYTarget) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.water.y.baseVal.value = i
+          }, this.speed * c)
+        })(waterY--, waterYCounter++)
+      }
+
+      while(waterHeight <= waterHeightTarget) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.water.height.baseVal.value = i
+            if(i === waterHeightTarget) {
               this.water.dataset.level = 'high'
+              this.moving = false
             }
-          }, this.speed * counter)
-        })(
-          sluiceHeight--,
-          waterY--,
-          waterHeight++,
-          boatY--,
-          counter++
-        )
+          }, this.speed * c)
+        })(waterHeight++, waterHeightCounter++)
+      }
+
+      if(this.boat.dataset.position === 'middle'){
+
+        while(boatY >= boatYTarget) {
+          ((i, c) => {
+            setTimeout(() => {
+              console.log(i === boatYTarget)
+              this.boat.setAttribute('d', `
+                M ${this.boatX}, ${i}
+                L ${this.boatX + 20}, ${i}
+                L ${this.boatX + 20}, ${i - 20}
+                L ${this.boatX + 130}, ${i - 20}
+                L ${this.boatX + 130}, ${i}
+                L ${this.boatX + 150}, ${i}
+                L ${this.boatX + 140}, ${i + 10}
+                L ${this.boatX + 10}, ${i + 10}
+              `)
+              if(i === boatYTarget) {
+                this.boatY = i
+              }
+            }, this.speed * c)
+          })(boatY--, boatYCounter++)
+        }
       }
     }
   }
@@ -441,72 +462,74 @@ class WVCanalLock extends HTMLElement {
       &&
       this.rightSluice.dataset.status === 'closed'
     ) {
+      let sluiceCounter = 0
       const sluiceTarget = 160
-      const waterYTarget = 200
-      const waterHeightTarget = 160
-      const boatYTarget = 190
-      this.moving = true
       let sluiceHeight = this.rightSluice.height.baseVal.value
+
+      let waterYCounter = 0
+      const waterYTarget = 200
       let waterY = this.water.y.baseVal.value
-      let waterHeight = this.water.height.baseVal.value
+
+      let boatYCounter = 0
+      const boatYTarget = 190
       let boatY = this.boatY
-      let counter = 0
-      while(
-        sluiceHeight >= sluiceTarget
-        ||
-        waterY <= waterYTarget
-        ||
-        waterHeight >= waterHeightTarget
-        ||
-        boatY <= boatYTarget
-      ) {
-        ((
-          sluiceHeight,
-          waterY,
-          waterHeight,
-          boatY,
-          counter
-        ) => {
+
+      let waterHeightCounter = 0
+      const waterHeightTarget = 160
+      let waterHeight = this.water.height.baseVal.value
+
+      while(sluiceHeight >= sluiceTarget) {
+        ((i, c) => {
           setTimeout(() => {
-            if(this.rightSluice.dataset.status !== 'open') {
-              this.rightSluice.height.baseVal.value = sluiceHeight
-            }
-            if(this.boat.dataset.position === 'middle' && boatY !== boatYTarget) {
-              this.boat.setAttribute('d', `M ${this.boatX}, ${boatY} L ${this.boatX + 20}, ${boatY} L ${this.boatX + 20}, ${boatY - 20} L ${this.boatX + 130}, ${boatY - 20} L ${this.boatX + 130}, ${boatY} L ${this.boatX + 150}, ${boatY} L ${this.boatX + 140}, ${boatY + 10} L ${this.boatX + 10}, ${boatY + 10}`)
-            } else {
-              if(this.boat.dataset.position === 'middle') {
-                this.boatY = boatY
-              }
-            }
-            if(this.water.dataset.level !== 'low') {
-              this.water.y.baseVal.value = waterY
-            }
-            if(this.water.dataset.level !== 'low') {
-              this.water.height.baseVal.value = waterHeight
-            }
-            if(
-              this.rightSluice.height.baseVal.value === sluiceTarget
-              &&
-              this.water.y.baseVal.value === waterYTarget
-              &&
-              this.water.height.baseVal.value === waterHeightTarget
-            ) {
-              this.moving = false
-            }
-            if(sluiceHeight === sluiceTarget) {
+            this.rightSluice.height.baseVal.value = i
+            if(i === sluiceTarget) {
               this.rightSluice.dataset.status = 'open'
             }
-            if(waterY === waterYTarget && waterHeight === waterHeightTarget && boatY === boatYTarget){
+          }, this.speed * c)
+        })(sluiceHeight--, sluiceCounter++)
+      }
+
+      while(waterY <= waterYTarget) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.water.y.baseVal.value = i
+          }, this.speed * c)
+        })(waterY++, waterYCounter++)
+      }
+
+      while(waterHeight >= waterHeightTarget) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.water.height.baseVal.value = i
+            if(i === waterHeightTarget) {
               this.water.dataset.level = 'low'
+              this.moving = false
             }
-          }, this.speed * counter)
-        })(
-          sluiceHeight--,
-          waterY++,
-          waterHeight--,
-          boatY++,
-          counter++
-        )
+          }, this.speed * c)
+        })(waterHeight--, waterHeightCounter++)
+      }
+
+      if(this.boat.dataset.position === 'middle'){
+
+        while(boatY <= boatYTarget) {
+          ((i, c) => {
+            setTimeout(() => {
+              this.boat.setAttribute('d', `
+                M ${this.boatX}, ${i}
+                L ${this.boatX + 20}, ${i}
+                L ${this.boatX + 20}, ${i - 20}
+                L ${this.boatX + 130}, ${i - 20}
+                L ${this.boatX + 130}, ${i}
+                L ${this.boatX + 150}, ${i}
+                L ${this.boatX + 140}, ${i + 10}
+                L ${this.boatX + 10}, ${i + 10}
+              `)
+              if(i === boatYTarget) {
+                this.boatY = i
+              }
+            }, this.speed * c)
+          })(boatY++, boatYCounter++)
+        }
       }
     }
   }
