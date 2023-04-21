@@ -1,14 +1,256 @@
 class WVCanalLock extends HTMLElement {
-
+  #moving = false
   constructor() {
     super()
     this.shadow = this.attachShadow({
       mode: 'open'
     })
-    this.speed = 20
+    this.speed = 25
     this.boatX = 30
     this.boatY = 130
-    this.moving = false
+  }
+
+  set moving(value) {
+    this.#moving = value
+    this.checkButtons()
+  }
+
+  get moving() {
+    return this.#moving
+  }
+
+  checkButtons() {
+    setTimeout(() => {
+      if(
+        !this.moving
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ){
+        this.openLeftSluiceButton.setAttribute('fill-opacity', '0')
+        this.openLeftSluiceButton.parentNode.classList.remove('not-allowed')
+        this.openRightSluiceButton.setAttribute('fill-opacity', '0')
+        this.openRightSluiceButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.openLeftSluiceButton.setAttribute('fill-opacity', '0.5')
+        this.openLeftSluiceButton.parentNode.classList.add('not-allowed')
+        this.openRightSluiceButton.setAttribute('fill-opacity', '0.5')
+        this.openRightSluiceButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.rightSluice.dataset.status === 'open'
+      ) {
+        this.closeRightSluiceButton.setAttribute('fill-opacity', '0')
+        this.closeRightSluiceButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.closeRightSluiceButton.setAttribute('fill-opacity', '0.5')
+        this.closeRightSluiceButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.leftSluice.dataset.status === 'open'
+      ) {
+        this.closeLeftSluiceButton.setAttribute('fill-opacity', '0')
+        this.closeLeftSluiceButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.closeLeftSluiceButton.setAttribute('fill-opacity', '0.5')
+        this.closeLeftSluiceButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'low'
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.openRightGateButton.setAttribute('fill-opacity', '0')
+        this.openRightGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.openRightGateButton.setAttribute('fill-opacity', '0.5')
+        this.openRightGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'high'
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.openLeftGateButton.setAttribute('fill-opacity', '0')
+        this.openLeftGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
+        this.openLeftGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'high'
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.openLeftGateButton.setAttribute('fill-opacity', '0')
+        this.openLeftGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
+        this.openLeftGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'high'
+        &&
+        this.leftGate.dataset.status === 'open'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.closeLeftGateButton.setAttribute('fill-opacity', '0')
+        this.closeLeftGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.closeLeftGateButton.setAttribute('fill-opacity', '0.5')
+        this.closeLeftGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'low'
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.rightGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.openRightGateButton.setAttribute('fill-opacity', '0')
+        this.openRightGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.openRightGateButton.setAttribute('fill-opacity', '0.5')
+        this.openRightGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        this.water.dataset.level === 'low'
+        &&
+        this.rightGate.dataset.status === 'open'
+        &&
+        this.leftGate.dataset.status === 'closed'
+        &&
+        this.leftSluice.dataset.status === 'closed'
+        &&
+        this.rightSluice.dataset.status === 'closed'
+      ) {
+        this.closeRightGateButton.setAttribute('fill-opacity', '0')
+        this.closeRightGateButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.closeRightGateButton.setAttribute('fill-opacity', '0.5')
+        this.closeRightGateButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        (
+          this.boat.dataset.position === 'middle'
+          ||
+          this.boat.dataset.position === 'right'
+        )
+        &&
+        (
+          (
+            this.boat.dataset.position === 'middle'
+            &&
+            this.leftGate.dataset.status === 'open'
+          )
+          ||
+          (
+            this.boat.dataset.position === 'right'
+            &&
+            this.rightGate.dataset.status === 'open'
+          )
+        )
+      ) {
+        this.moveLeftButton.setAttribute('fill-opacity', '0')
+        this.moveLeftButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.moveLeftButton.setAttribute('fill-opacity', '0.5')
+        this.moveLeftButton.parentNode.classList.add('not-allowed')
+      }
+      if(
+        !this.moving
+        &&
+        (
+          this.boat.dataset.position === 'left'
+          ||
+          this.boat.dataset.position === 'middle'
+        )
+        &&
+        (
+          (
+            this.boat.dataset.position === 'left'
+            &&
+            this.leftGate.dataset.status === 'open'
+          )
+          ||
+          (
+            this.boat.dataset.position === 'middle'
+            &&
+            this.rightGate.dataset.status === 'open'
+          )
+        )
+      ) {
+        this.moveRightButton.setAttribute('fill-opacity', '0')
+        this.moveRightButton.parentNode.classList.remove('not-allowed')
+      } else {
+        this.moveRightButton.setAttribute('fill-opacity', '0.5')
+        this.moveRightButton.parentNode.classList.add('not-allowed')
+      }
+    }, 20)
+
+  }
+
+  get css() {
+    return `
+      <style>
+        .button {
+          cursor: pointer;
+        }
+        .button.not-allowed {
+          cursor: not-allowed;
+        }
+      </style>
+    `
   }
 
   get svg() {
@@ -20,7 +262,16 @@ class WVCanalLock extends HTMLElement {
         <rect x="0" y="140" width="220" height="220" fill="#cccccc" stroke="none"></rect>
         <rect x="220" y="140" width="220" height="220" fill="#cccccc" stroke="none" id="water" data-level="high"></rect>
         <rect x="440" y="200" width="220" height="160" fill="#cccccc" stroke="none"></rect>
-        <path fill="#32369b" stroke="none" d="M30,130L50,130L50,110L160,110L160,130L180,130L170,140L40,140" id="boat" data-position="left"></path>
+        <path fill="#32369b" stroke="none" d="
+          M 30, 130
+          L 50, 130
+          L 50, 110
+          L 160, 110
+          L 160, 130
+          L 180, 130
+          L 170, 140
+          L 40, 140
+        " id="boat" data-position="left"></path>
         <g>
           <rect x="210" y="130" width="20" height="190" fill="#6faede" stroke="none" id="leftSluice" data-status="closed"></rect>
           <rect x="210" y="320" width="20" height="40" fill="#6faede" stroke="none"></rect>
@@ -31,7 +282,7 @@ class WVCanalLock extends HTMLElement {
         </g>
         <rect x="220" y="135" width="0" height="225" fill="#6faede" stroke="none" id="leftGate" data-status="closed"></rect>
         <rect x="440" y="135" width="0" height="225" fill="#329a9b" stroke="none" id="rightGate" data-status="closed"></rect>
-        <g onclick="this.getRootNode().host.closeLeftSluice()">
+        <g onclick="this.getRootNode().host.closeLeftSluice()" class="button not-allowed">
           <rect x="730" y="300" width="60" height="60" fill="#6faede" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M760,310L760,350" stroke-width="5px" stroke-linecap="round"></path>
@@ -39,7 +290,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="730" y="300" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="closeLeftSluice"></rect>
         </g>
-        <g onclick="this.getRootNode().host.closeRightSluice()">
+        <g onclick="this.getRootNode().host.closeRightSluice()" class="button not-allowed">
           <rect x="840" y="300" width="60" height="60" fill="#329a9b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M870,310L870,350" stroke-width="5px" stroke-linecap="round"></path>
@@ -47,7 +298,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="840" y="300" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="closeRightSluice"></rect>
         </g>
-        <g onclick="this.getRootNode().host.openLeftSluice()">
+        <g onclick="this.getRootNode().host.openLeftSluice()" class="button not-allowed">
           <rect x="730" y="230" width="60" height="60" fill="#6faede" stroke="none"></rect>
           <g>
           <path fill="none" stroke="#000000" d="M760,240L760,280" stroke-width="5px" stroke-linecap="round"></path>
@@ -55,7 +306,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="730" y="230" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="openLeftSluice"></rect>
         </g>
-        <g onclick="this.getRootNode().host.openRightSluice()">
+        <g onclick="this.getRootNode().host.openRightSluice()" class="button not-allowed">
           <rect x="840" y="230" width="60" height="60" fill="#329a9b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M870,240L870,280" stroke-width="5px" stroke-linecap="round"></path>
@@ -63,7 +314,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="840" y="230" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="openRightSluice"></rect>
         </g>
-        <g onclick="this.getRootNode().host.closeLeftGate()">
+        <g onclick="this.getRootNode().host.closeLeftGate()" class="button not-allowed">
           <rect x="730" y="160" width="60" height="60" fill="#6faede" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M740,190L780,190" stroke-width="5px" stroke-linecap="round"></path>
@@ -71,7 +322,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="730" y="160" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="closeLeftGate"></rect>
         </g>
-        <g onclick="this.getRootNode().host.closeRightGate()">
+        <g onclick="this.getRootNode().host.closeRightGate()" class="button not-allowed">
           <rect x="840" y="160" width="60" height="60" fill="#329a9b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M850,190L890,190" stroke-width="5px" stroke-linecap="round"></path>
@@ -79,7 +330,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="840" y="160" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="closeRightGate"></rect>
         </g>
-        <g onclick="this.getRootNode().host.openLeftGate()">
+        <g onclick="this.getRootNode().host.openLeftGate()" class="button not-allowed">
           <rect x="730" y="90" width="60" height="60" fill="#6faede" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M740,120L780,120" stroke-width="5px" stroke-linecap="round"></path>
@@ -87,7 +338,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="730" y="90" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="openLeftGate"></rect>
         </g>
-        <g onclick="this.getRootNode().host.openRightGate()">
+        <g onclick="this.getRootNode().host.openRightGate()" class="button not-allowed">
           <rect x="840" y="90" width="60" height="60" fill="#329a9b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#000000" d="M850,120L890,120" stroke-width="5px" stroke-linecap="round"></path>
@@ -95,7 +346,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="840" y="90" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="openRightGate"></rect>
         </g>
-        <g onclick="this.getRootNode().host.moveLeft()">
+        <g onclick="this.getRootNode().host.moveLeft()" class="button not-allowed">
           <rect x="730" y="20" width="60" height="60" fill="#32369b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#ffffff" d="M740,50L780,50" stroke-width="5px" stroke-linecap="round"></path>
@@ -103,7 +354,7 @@ class WVCanalLock extends HTMLElement {
           </g>
           <rect x="730" y="20" width="60" height="60" fill="#ffffff" stroke="none" fill-opacity="0.5" id="moveLeft"></rect>
         </g>
-        <g onclick="this.getRootNode().host.moveRight()">
+        <g onclick="this.getRootNode().host.moveRight()" class="button not-allowed">
           <rect x="840" y="20" width="60" height="60" fill="#32369b" stroke="none"></rect>
           <g>
             <path fill="none" stroke="#ffffff" d="M850,50L890,50" stroke-width="5px" stroke-linecap="round"></path>
@@ -157,7 +408,7 @@ class WVCanalLock extends HTMLElement {
             `)
             if(i === target) {
               this.moving = false
-              this.boat.dataset.position = 'middle'
+              this.boat.dataset.position = target === 30 ? 'left' : 'middle'
             }
           }, this.speed * c)
         })(this.boatX--, counter++)
@@ -353,7 +604,7 @@ class WVCanalLock extends HTMLElement {
       &&
       this.rightSluice.dataset.status === 'closed'
     ) {
-
+      this.moving = true
       let sluiceCounter = 0
       const sluiceTarget = 160
       let sluiceHeight = this.leftSluice.height.baseVal.value
@@ -462,6 +713,8 @@ class WVCanalLock extends HTMLElement {
       &&
       this.rightSluice.dataset.status === 'closed'
     ) {
+
+      this.moving = true
       let sluiceCounter = 0
       const sluiceTarget = 160
       let sluiceHeight = this.rightSluice.height.baseVal.value
@@ -565,11 +818,28 @@ class WVCanalLock extends HTMLElement {
     this.leftSluice = this.shadow.querySelector('#leftSluice')
     this.rightSluice = this.shadow.querySelector('#rightSluice')
     this.water = this.shadow.querySelector('#water')
+
+    this.closeLeftSluiceButton = this.shadow.querySelector('#closeLeftSluice')
+    this.closeRightSluiceButton = this.shadow.querySelector('#closeRightSluice')
+    this.openLeftSluiceButton = this.shadow.querySelector('#openLeftSluice')
+    this.openRightSluiceButton = this.shadow.querySelector('#openRightSluice')
+    this.closeLeftGateButton = this.shadow.querySelector('#closeLeftGate')
+    this.closeRightGateButton = this.shadow.querySelector('#closeRightGate')
+    this.openLeftGateButton = this.shadow.querySelector('#openLeftGate')
+    this.openRightGateButton = this.shadow.querySelector('#openRightGate')
+    this.moveLeftButton = this.shadow.querySelector('#moveLeft')
+    this.moveRightButton = this.shadow.querySelector('#moveRight')
+    this.buttons = this.shadow.querySelectorAll('.button')
+
+    this.moving = false
+    this.checkButtons()
   }
 
   render() {
-    this.shadow.innerHTML = `${this.svg}`
+    this.shadow.innerHTML = `${this.css}${this.svg}`
   }
+
+
 }
 
 window.customElements.define('wc-canal-lock', WVCanalLock)
