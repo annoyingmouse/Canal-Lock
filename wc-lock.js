@@ -5,7 +5,7 @@ class WVCanalLock extends HTMLElement {
     this.shadow = this.attachShadow({
       mode: 'open'
     })
-    this.speed = 25
+    this.speed = 10
     this.boatX = 30
     this.boatY = 130
   }
@@ -19,225 +19,225 @@ class WVCanalLock extends HTMLElement {
     return this.#moving
   }
 
+
+
   checkButtons() {
-    setTimeout(() => {
-      if(
-        !this.moving
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ){
-        this.openLeftSluiceButton.setAttribute('fill-opacity', '0')
-        this.openLeftSluiceButton.parentNode.classList.remove('not-allowed')
-        this.openRightSluiceButton.setAttribute('fill-opacity', '0')
-        this.openRightSluiceButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.openLeftSluiceButton.setAttribute('fill-opacity', '0.5')
-        this.openLeftSluiceButton.parentNode.classList.add('not-allowed')
-        this.openRightSluiceButton.setAttribute('fill-opacity', '0.5')
-        this.openRightSluiceButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.rightSluice.dataset.status === 'open'
-      ) {
-        this.closeRightSluiceButton.setAttribute('fill-opacity', '0')
-        this.closeRightSluiceButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.closeRightSluiceButton.setAttribute('fill-opacity', '0.5')
-        this.closeRightSluiceButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.leftSluice.dataset.status === 'open'
-      ) {
-        this.closeLeftSluiceButton.setAttribute('fill-opacity', '0')
-        this.closeLeftSluiceButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.closeLeftSluiceButton.setAttribute('fill-opacity', '0.5')
-        this.closeLeftSluiceButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'low'
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.openRightGateButton.setAttribute('fill-opacity', '0')
-        this.openRightGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.openRightGateButton.setAttribute('fill-opacity', '0.5')
-        this.openRightGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'high'
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.openLeftGateButton.setAttribute('fill-opacity', '0')
-        this.openLeftGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
-        this.openLeftGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'high'
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.openLeftGateButton.setAttribute('fill-opacity', '0')
-        this.openLeftGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
-        this.openLeftGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'high'
-        &&
-        this.leftGate.dataset.status === 'open'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.closeLeftGateButton.setAttribute('fill-opacity', '0')
-        this.closeLeftGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.closeLeftGateButton.setAttribute('fill-opacity', '0.5')
-        this.closeLeftGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'low'
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.rightGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.openRightGateButton.setAttribute('fill-opacity', '0')
-        this.openRightGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.openRightGateButton.setAttribute('fill-opacity', '0.5')
-        this.openRightGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
-        this.water.dataset.level === 'low'
-        &&
-        this.rightGate.dataset.status === 'open'
-        &&
-        this.leftGate.dataset.status === 'closed'
-        &&
-        this.leftSluice.dataset.status === 'closed'
-        &&
-        this.rightSluice.dataset.status === 'closed'
-      ) {
-        this.closeRightGateButton.setAttribute('fill-opacity', '0')
-        this.closeRightGateButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.closeRightGateButton.setAttribute('fill-opacity', '0.5')
-        this.closeRightGateButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
+
+    if(
+      !this.moving
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ){
+      this.openLeftSluiceButton.setAttribute('fill-opacity', '0')
+      this.openLeftSluiceButton.parentNode.classList.remove('not-allowed')
+      this.openRightSluiceButton.setAttribute('fill-opacity', '0')
+      this.openRightSluiceButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.openLeftSluiceButton.setAttribute('fill-opacity', '0.5')
+      this.openLeftSluiceButton.parentNode.classList.add('not-allowed')
+      this.openRightSluiceButton.setAttribute('fill-opacity', '0.5')
+      this.openRightSluiceButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.rightSluice.dataset.status === 'open'
+    ) {
+      this.closeRightSluiceButton.setAttribute('fill-opacity', '0')
+      this.closeRightSluiceButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.closeRightSluiceButton.setAttribute('fill-opacity', '0.5')
+      this.closeRightSluiceButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.leftSluice.dataset.status === 'open'
+    ) {
+      this.closeLeftSluiceButton.setAttribute('fill-opacity', '0')
+      this.closeLeftSluiceButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.closeLeftSluiceButton.setAttribute('fill-opacity', '0.5')
+      this.closeLeftSluiceButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'low'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.openRightGateButton.setAttribute('fill-opacity', '0')
+      this.openRightGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.openRightGateButton.setAttribute('fill-opacity', '0.5')
+      this.openRightGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'high'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.openLeftGateButton.setAttribute('fill-opacity', '0')
+      this.openLeftGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
+      this.openLeftGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'high'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.openLeftGateButton.setAttribute('fill-opacity', '0')
+      this.openLeftGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.openLeftGateButton.setAttribute('fill-opacity', '0.5')
+      this.openLeftGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'high'
+      &&
+      this.leftGate.dataset.status === 'open'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.closeLeftGateButton.setAttribute('fill-opacity', '0')
+      this.closeLeftGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.closeLeftGateButton.setAttribute('fill-opacity', '0.5')
+      this.closeLeftGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'low'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.rightGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.openRightGateButton.setAttribute('fill-opacity', '0')
+      this.openRightGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.openRightGateButton.setAttribute('fill-opacity', '0.5')
+      this.openRightGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      this.water.dataset.level === 'low'
+      &&
+      this.rightGate.dataset.status === 'open'
+      &&
+      this.leftGate.dataset.status === 'closed'
+      &&
+      this.leftSluice.dataset.status === 'closed'
+      &&
+      this.rightSluice.dataset.status === 'closed'
+    ) {
+      this.closeRightGateButton.setAttribute('fill-opacity', '0')
+      this.closeRightGateButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.closeRightGateButton.setAttribute('fill-opacity', '0.5')
+      this.closeRightGateButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      (
+        this.boat.dataset.position === 'middle'
+        ||
+        this.boat.dataset.position === 'right'
+      )
+      &&
+      (
         (
           this.boat.dataset.position === 'middle'
-          ||
-          this.boat.dataset.position === 'right'
+          &&
+          this.leftGate.dataset.status === 'open'
         )
-        &&
+        ||
         (
-          (
-            this.boat.dataset.position === 'middle'
-            &&
-            this.leftGate.dataset.status === 'open'
-          )
-          ||
-          (
-            this.boat.dataset.position === 'right'
-            &&
-            this.rightGate.dataset.status === 'open'
-          )
+          this.boat.dataset.position === 'right'
+          &&
+          this.rightGate.dataset.status === 'open'
         )
-      ) {
-        this.moveLeftButton.setAttribute('fill-opacity', '0')
-        this.moveLeftButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.moveLeftButton.setAttribute('fill-opacity', '0.5')
-        this.moveLeftButton.parentNode.classList.add('not-allowed')
-      }
-      if(
-        !this.moving
-        &&
+      )
+    ) {
+      this.moveLeftButton.setAttribute('fill-opacity', '0')
+      this.moveLeftButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.moveLeftButton.setAttribute('fill-opacity', '0.5')
+      this.moveLeftButton.parentNode.classList.add('not-allowed')
+    }
+    if(
+      !this.moving
+      &&
+      (
+        this.boat.dataset.position === 'left'
+        ||
+        this.boat.dataset.position === 'middle'
+      )
+      &&
+      (
         (
           this.boat.dataset.position === 'left'
-          ||
-          this.boat.dataset.position === 'middle'
+          &&
+          this.leftGate.dataset.status === 'open'
         )
-        &&
+        ||
         (
-          (
-            this.boat.dataset.position === 'left'
-            &&
-            this.leftGate.dataset.status === 'open'
-          )
-          ||
-          (
-            this.boat.dataset.position === 'middle'
-            &&
-            this.rightGate.dataset.status === 'open'
-          )
+          this.boat.dataset.position === 'middle'
+          &&
+          this.rightGate.dataset.status === 'open'
         )
-      ) {
-        this.moveRightButton.setAttribute('fill-opacity', '0')
-        this.moveRightButton.parentNode.classList.remove('not-allowed')
-      } else {
-        this.moveRightButton.setAttribute('fill-opacity', '0.5')
-        this.moveRightButton.parentNode.classList.add('not-allowed')
-      }
-    }, 20)
-
+      )
+    ) {
+      this.moveRightButton.setAttribute('fill-opacity', '0')
+      this.moveRightButton.parentNode.classList.remove('not-allowed')
+    } else {
+      this.moveRightButton.setAttribute('fill-opacity', '0.5')
+      this.moveRightButton.parentNode.classList.add('not-allowed')
+    }
   }
 
   get css() {
@@ -407,8 +407,8 @@ class WVCanalLock extends HTMLElement {
               L ${i + 10}, ${this.boatY + 10}
             `)
             if(i === target) {
-              this.moving = false
               this.boat.dataset.position = target === 30 ? 'left' : 'middle'
+              this.moving = false
             }
           }, this.speed * c)
         })(this.boatX--, counter++)
@@ -456,9 +456,9 @@ class WVCanalLock extends HTMLElement {
               L ${i + 10}, ${this.boatY + 10}
             `)
             if(i === target) {
-              this.moving = false
               this.boatX = i
               this.boat.dataset.position = target === 250 ? 'middle' : 'right'
+              this.moving = false
             }
           }, this.speed * c)
         })(this.boatX++, counter++)
@@ -489,8 +489,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.leftGate.width.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.leftGate.dataset.status = 'open'
+              this.moving = false
             }
           }, this.speed * c)
         })(gateWidth++, counter++)
@@ -520,8 +520,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.leftGate.width.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.leftGate.dataset.status = 'closed'
+              this.moving = false
             }
           }, this.speed * c)
         })(gateWidth--, counter++)
@@ -552,8 +552,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.rightGate.width.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.rightGate.dataset.status = 'open'
+              this.moving = false
             }
           }, this.speed * c)
         })(gateWidth++, counter++)
@@ -583,8 +583,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.rightGate.width.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.rightGate.dataset.status = 'closed'
+              this.moving = false
             }
           }, this.speed * c)
         })(gateWidth--, counter++)
@@ -627,6 +627,9 @@ class WVCanalLock extends HTMLElement {
             this.leftSluice.height.baseVal.value = i
             if(i === sluiceTarget) {
               this.leftSluice.dataset.status = 'open'
+              if(this.water.dataset.level === 'high') {
+                this.moving = false
+              }
             }
           }, this.speed * c)
         })(sluiceHeight--, sluiceCounter++)
@@ -646,7 +649,9 @@ class WVCanalLock extends HTMLElement {
             this.water.height.baseVal.value = i
             if(i === waterHeightTarget) {
               this.water.dataset.level = 'high'
-              this.moving = false
+              if(this.leftSluice.dataset.status === 'open') {
+                this.moving = false
+              }
             }
           }, this.speed * c)
         })(waterHeight++, waterHeightCounter++)
@@ -692,8 +697,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.leftSluice.height.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.leftSluice.dataset.status = 'closed'
+              this.moving = false
             }
           }, this.speed * c)
         })(sluiceHeight++, counter++)
@@ -731,17 +736,6 @@ class WVCanalLock extends HTMLElement {
       const waterHeightTarget = 160
       let waterHeight = this.water.height.baseVal.value
 
-      while(sluiceHeight >= sluiceTarget) {
-        ((i, c) => {
-          setTimeout(() => {
-            this.rightSluice.height.baseVal.value = i
-            if(i === sluiceTarget) {
-              this.rightSluice.dataset.status = 'open'
-            }
-          }, this.speed * c)
-        })(sluiceHeight--, sluiceCounter++)
-      }
-
       while(waterY <= waterYTarget) {
         ((i, c) => {
           setTimeout(() => {
@@ -756,10 +750,26 @@ class WVCanalLock extends HTMLElement {
             this.water.height.baseVal.value = i
             if(i === waterHeightTarget) {
               this.water.dataset.level = 'low'
-              this.moving = false
+              if(this.rightSluice.dataset.status === 'open') {
+                this.moving = false
+              }
             }
           }, this.speed * c)
         })(waterHeight--, waterHeightCounter++)
+      }
+
+      while(sluiceHeight >= sluiceTarget) {
+        ((i, c) => {
+          setTimeout(() => {
+            this.rightSluice.height.baseVal.value = i
+            if(i === sluiceTarget) {
+              this.rightSluice.dataset.status = 'open'
+              if(this.water.dataset.level === 'low') {
+                this.moving = false
+              }
+            }
+          }, this.speed * c)
+        })(sluiceHeight--, sluiceCounter++)
       }
 
       if(this.boat.dataset.position === 'middle'){
@@ -801,8 +811,8 @@ class WVCanalLock extends HTMLElement {
           setTimeout(() => {
             this.rightSluice.height.baseVal.value = i
             if(i === target) {
-              this.moving = false
               this.rightSluice.dataset.status = 'closed'
+              this.moving = false
             }
           }, this.speed * c)
         })(sluiceHeight++, counter++)
