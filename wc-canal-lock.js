@@ -1,11 +1,9 @@
 class WCCanalLock extends HTMLElement {
-
   #moving = false
-
   constructor() {
     super()
     this.shadow = this.attachShadow({
-      mode: 'closed'
+      mode: 'open'
     })
     this.speed = 20
     this.boatX = 30
@@ -250,10 +248,12 @@ class WCCanalLock extends HTMLElement {
 
   get svg() {
     return `
-      <svg height="400"
-           width="900"
+      <svg height="auto"
+           width="100%"
+           viewBox="0 0 900 400"
+           preserveAspectRatio="xMinYMin slice"
            xmlns="http://www.w3.org/2000/svg"
-           style="overflow: hidden; position: relative; left: -0.400002px;">
+           style="width: 100%;">
         <rect x="0" y="140" width="220" height="220" fill="#cccccc" stroke="none"></rect>
         <rect x="220" y="140" width="220" height="220" fill="#cccccc" stroke="none" id="water" data-level="high"></rect>
         <rect x="440" y="200" width="220" height="160" fill="#cccccc" stroke="none"></rect>
