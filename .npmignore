@@ -2,7 +2,6 @@ index.html
 rollup.config.js
 .prettierrc
 style/
-js/
 .idea
 package.json
 lock.svg
